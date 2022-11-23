@@ -2,24 +2,27 @@ import pygame
 from pygame.locals import *
 from settings import *
 
+pygame.font.init()
+
 class Game():
     def __init__(self, display):
         self.display = display
-        self.draw_grid()
+        self.turn_x = True
+        self.grid = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+        ]
+
+    def change_turn(self):
+        self.change_turn = not self.change_turn
+
+    def turn_icon(self):
+        if self.turn_x:
+            return "X"
+        else:
+            return "O"
     
-    def draw_grid(self):
-        h_line_1 = ((GRID_BORDER, GRID_START + GRID_BORDER + CELL_SIZE), 
-            (WIDTH - GRID_BORDER, GRID_START + GRID_BORDER + CELL_SIZE))
-        h_line_2 = ((GRID_BORDER, GRID_START + GRID_BORDER + 2*CELL_SIZE), 
-            (WIDTH - GRID_BORDER, GRID_START + GRID_BORDER + 2*CELL_SIZE))
-
-        v_line_1 = ((GRID_BORDER + CELL_SIZE, GRID_START + GRID_BORDER), 
-            (GRID_BORDER + CELL_SIZE, HEIGHT - GRID_BORDER))
-        v_line_2 = ((GRID_BORDER + 2*CELL_SIZE, GRID_START + GRID_BORDER), 
-            (GRID_BORDER + 2*CELL_SIZE, HEIGHT - GRID_BORDER))
-
-        pygame.draw.line(self.display, BLACK, h_line_1[0], h_line_1[1], 2)
-        pygame.draw.line(self.display, BLACK, h_line_2[0], h_line_2[1], 2)
-
-        pygame.draw.line(self.display, BLACK, v_line_1[0], v_line_1[1], 2)
-        pygame.draw.line(self.display, BLACK, v_line_2[0], v_line_2[1], 2)
+    def place_move(self, row, col):
+        self.grid[row][col] = self.turn_icon()
+        self.change_turn()
