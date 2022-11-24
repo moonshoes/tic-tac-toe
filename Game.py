@@ -15,13 +15,16 @@ class Game():
         ]
 
     def change_turn(self):
-        self.change_turn = not self.change_turn
+        self.turn_x = not self.turn_x
 
     def turn_icon(self):
         if self.turn_x:
             return "X"
         else:
             return "O"
+    
+    def cell_empty(self, row, col):
+        return self.grid[row][col] == ""
     
     def place_move(self, row, col):
         self.grid[row][col] = self.turn_icon()
