@@ -5,7 +5,9 @@ pygame.font.init()
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+
 BG_COLOR = WHITE
+FONT_COLOR = BLACK
 
 WIDTH, HEIGHT = 600, 700
 

@@ -1,15 +1,13 @@
 import pygame
 from settings import *
 import Game as g
+import Banner as b
 
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 WINDOW.fill(BG_COLOR)
 
 game = g.Game(WINDOW)
-banner_text = "X's turn"
-banner_font = get_font(50)
-banner_surface = pygame.surface.Surface((WIDTH, GRID_START))
-banner_rect = banner_surface.get_rect(topleft=(0,0))
+banner = b.Banner(WINDOW, "X's turn", 50)
 
 def draw_grid():
         h_line_1 = ((GRID_BORDER, GRID_START + GRID_BORDER + CELL_SIZE), 
@@ -51,7 +49,7 @@ def get_cell_center(row, col):
 
 def place_move(row, col):
     font = get_font(CELL_SIZE)
-    text_surface = font.render(game.turn_icon(), True, BLACK)
+    text_surface = font.render(game.turn_icon(), True, FONT_COLOR)
     cell_x, cell_y = get_cell_center(row, col)
     WINDOW.blit(text_surface, 
         (cell_x - text_surface.get_width()/2, cell_y - text_surface.get_height()/2))
@@ -59,18 +57,12 @@ def place_move(row, col):
     # Move placed in actual grid last because this also changes the turn automatically!
     game.place_move(row, col)
     text = "{}'s turn".format(game.turn_icon())
-    print_banner_text(text)
-
-def print_banner_text(text):
-    banner_surface.fill(BG_COLOR)
-    text_surface = banner_font.render(text, True, BLACK)
-    WINDOW.blit(text_surface, 
-        (WIDTH / 2 - text_surface.get_width()/2, GRID_START / 2 - text_surface.get_height()/2))
+    banner.update_text(text)
 
 
 running = True
 draw_grid()
-print_banner_text(banner_text)
+banner.print_text()
 
 while running:
     for event in pygame.event.get():
