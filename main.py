@@ -56,7 +56,10 @@ def place_move(row, col):
 
     # Move placed in actual grid last because this also changes the turn automatically!
     game.place_move(row, col)
-    text = "{}'s turn".format(game.turn_icon())
+    if not game.has_won:
+        text = "{}'s turn".format(game.turn_icon())
+    else:
+        text = "{} has won!".format(game.turn_icon())
     banner.update_text(text)
 
 
@@ -71,7 +74,7 @@ while running:
         
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
-            if mouse_in_grid(pos):
+            if mouse_in_grid(pos) and not game.has_won:
                 row, col = get_row_col(pos)
                 if game.cell_empty(row, col):
                     place_move(row, col)
