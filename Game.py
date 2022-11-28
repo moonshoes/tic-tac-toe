@@ -10,6 +10,7 @@ class Game():
         self.turn_x = True
         self.grid = []
         self.has_won = False
+        self.empty_grid()
 
     def empty_grid(self):
         self.grid = [
@@ -21,6 +22,7 @@ class Game():
     def reset_game(self):
         self.empty_grid()
         self.turn_x = True
+        self.has_won = False
     
     def change_turn(self):
         self.turn_x = not self.turn_x
@@ -84,5 +86,7 @@ class Game():
                 result = center == self.grid[2][1]
             if not result and center == self.grid[1][0]:
                 result = center == self.grid[1][2]
+            if not result and center == self.grid[0][2]:
+                result = center == self.grid[2][0]
 
         return result

@@ -2,12 +2,15 @@ import pygame
 from settings import *
 import Game as g
 import Banner as b
+import Button as bu
 
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 WINDOW.fill(BG_COLOR)
 
 game = g.Game(WINDOW)
 banner = b.Banner(WINDOW, "X's turn", 50)
+button = bu.Button(WINDOW, 16)
+
 
 def draw_grid():
         h_line_1 = ((GRID_BORDER, GRID_START + GRID_BORDER + CELL_SIZE), 
@@ -25,6 +28,12 @@ def draw_grid():
 
         pygame.draw.line(WINDOW, BLACK, v_line_1[0], v_line_1[1], 2)
         pygame.draw.line(WINDOW, BLACK, v_line_2[0], v_line_2[1], 2)
+
+def reset_grid():
+    WINDOW.fill(BG_COLOR)
+    draw_grid()
+    button.draw()
+    banner.update_text("{}'s turn".format(game.turn_icon()))
 
 def mouse_in_grid(pos):
     x, y = pos
@@ -66,6 +75,7 @@ def place_move(row, col):
 running = True
 draw_grid()
 banner.print_text()
+button.draw()
 
 while running:
     for event in pygame.event.get():
@@ -74,6 +84,9 @@ while running:
         
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
+            if button.clicked(pos):
+                game.reset_game()
+                reset_grid()
             if mouse_in_grid(pos) and not game.has_won:
                 row, col = get_row_col(pos)
                 if game.cell_empty(row, col):
